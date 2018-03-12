@@ -1,16 +1,19 @@
+from envparse import env
+from string import Template
+
 import json
 import logging
 import pyodbc
-from envparse import env
-from string import Template
 import sys
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
@@ -19,9 +22,9 @@ def init_connection():
     connection = pyodbc.connect(get_connection_string())
     return connection, connection.cursor()
 
+
 def get_connection_string():
-    """Constructs the connection string for the DB with values from env file
-    """
+    """Constructs the connection string for the DB with values from env file"""
     connection_string = Template("Driver={$SQLDriver};"
                                  "Server=$server,$port;"
                                  "Database=$db_name;"
@@ -44,15 +47,9 @@ def get_connection_string():
     )
 
 
-def print_rows(cursor):
-    table_name = '"' + env.str('TableName') + '"'
-    cursor.execute("SELECT * FROM linux_containers_windows")
-    for row in cursor.fetchall():
-        print row
-
-
 def insert_values(cursor, values_dict):
-    """Creates an insert command from a template and calls the pyodbc method
+    """Creates an insert command from a template and calls the pyodbc method.
+
      Provided with a dictionary that is structured so the keys match the
      column names and the values are represented by the items that are to be
      inserted the function composes the sql command from a template and
@@ -68,9 +65,9 @@ def insert_values(cursor, values_dict):
         values = ', '.join([str(values), "'" + str(item) + "'"])
 
     insert_command = insert_command_template.substitute(
-            tableName=table_name,
-            columns=', '.join(values_dict.keys()),
-            values=values[1:]
+        tableName=table_name,
+        columns=', '.join(values_dict.keys()),
+        values=values[1:]
         )
 
     logger.debug('Insert command that will be exectued:')
@@ -82,11 +79,6 @@ def insert_values(cursor, values_dict):
         print(dir(data_error))
         if data_error[0] == '22001':
             logger.error('Value to be inserted exceeds column size limit')
-            wrong_value = compare_lengths(cursor, values_dict)
-            logger.error('Max size for column %s is %i',
-                         wrong_value['columnName'], wrong_value['columnSize'])
-            logger.error('Actual size for column %s is %i',
-                         wrong_value['columnName'], wrong_value['actualSize'])
         else:
             logger.error('Database insertion error', exc_info=True)
 
@@ -103,12 +95,11 @@ def main():
     data = json.load(open('tests.json'))
 
     for row in data:
-        print row
+        print(row)
         insert_values(db_cursor, row)
 
     logger.debug('Executing insertion commands')
     db_connection.commit()
 
-    print_rows(db_cursor)
 
 main()
