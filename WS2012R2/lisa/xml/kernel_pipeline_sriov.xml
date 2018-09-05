@@ -51,38 +51,6 @@
 
                 <!-- Basic SR-IOV test -->
                 <suiteTest>VerifyVF_basic</suiteTest>
-                <suiteTest>Ethtool_VerifyVF_basic</suiteTest>
-
-                <!-- Failover tests group -->
-                <suiteTest>DisableVF</suiteTest>
-                <suiteTest>ModuleReload</suiteTest>
-                <suiteTest>Ping_DisableVF</suiteTest>
-                <suiteTest>iPerf_DisableVF</suiteTest>
-                <suiteTest>Deattach_Attach_NIC</suiteTest>
-                <suiteTest>Host_Disable_SRIOV</suiteTest>
-                <suiteTest>DisableNIC</suiteTest>
-
-                <!-- Complex SR-IOV tests -->
-                <suiteTest>Multicast</suiteTest> 
-                <suiteTest>Broadcast</suiteTest>
-                <suiteTest>iPerf_Reboot</suiteTest>
-                <suiteTest>iPerf_Stress</suiteTest>
-                <suiteTest>Disable_VMQ</suiteTest>
-                <suiteTest>Change_RSS</suiteTest>
-                <suiteTest>Measure_DisableVF</suiteTest>
-                <suiteTest>Move_VHD</suiteTest>
-                <suiteTest>Max_vCPU</suiteTest>
-                <suiteTest>One_vCPU</suiteTest>
-
-                <!-- Multiple VFs tests -->
-                <suiteTest>Multiple_basic</suiteTest>
-                <suiteTest>Multiple_fileCopy</suiteTest>
-                <suiteTest>MaxNICS</suiteTest>
-                <suiteTest>MaxNICS_vCPU</suiteTest>
-
-                <!-- Pause/Save VM tests -->
-                <suiteTest>Stress_PauseVM</suiteTest>
-                <suiteTest>Stress_SaveVM</suiteTest>
             </suiteTests>
         </suite>
     </testSuites>
